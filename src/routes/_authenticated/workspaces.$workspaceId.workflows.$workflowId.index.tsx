@@ -77,8 +77,13 @@ function WorkflowBuilderPage() {
   );
   const [selectedVersionId, setSelectedVersionId] = useState<string | undefined>(undefined);
   const versionId = selectedVersionId ?? activeVersion?.id;
+  const selectedVersion = useMemo(
+    () => versionsQuery.data?.find((v) => v.id === versionId) ?? activeVersion,
+    [versionsQuery.data, versionId, activeVersion],
+  );
+  const versionNumber = versionNumberOf(selectedVersion);
 
-  const graphQuery = useWorkflowGraph(workspaceId, workflowId, versionId);
+  const graphQuery = useWorkflowGraph(workspaceId, workflowId, versionNumber);
   const saveGraph = useSaveGraph(workspaceId, workflowId, versionId);
   const publish = usePublishVersion(workspaceId, workflowId, versionId);
   const createVersion = useCreateVersion(workspaceId, workflowId);
