@@ -3,9 +3,9 @@ import axios from "axios";
 import type { ApiErrorResponse } from "@/types/api";
 
 export class ApiError extends Error {
-  status?: number;
-  code?: string;
-  details?: ApiErrorResponse;
+  status?: number | undefined;
+  code?: string | undefined;
+  details?: ApiErrorResponse | undefined;
 
   constructor(message: string, status?: number, code?: string, details?: ApiErrorResponse) {
     super(message);

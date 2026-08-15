@@ -9,7 +9,7 @@ import { toApiError } from "@/lib/errorHandler";
 import type { ApiResponse } from "@/types/api";
 
 export const API_BASE_URL: string =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "http://localhost:8080";
+  (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? "http://localhost:8080";
 
 /** Raw axios instance without interceptors — used for the refresh call itself. */
 export const rawClient: AxiosInstance = axios.create({
