@@ -26,9 +26,11 @@ export async function createVersion(
 export async function getGraph(
   workspaceId: string,
   workflowId: string,
-  versionId: string,
+  versionNumber: number,
 ): Promise<WorkflowGraphDto> {
-  const response = await apiClient.get(`${base(workspaceId, workflowId)}/${versionId}/graph`);
+  const response = await apiClient.get(
+    `${base(workspaceId, workflowId)}/${versionNumber}/graph`,
+  );
   return unwrap<WorkflowGraphDto>(response);
 }
 

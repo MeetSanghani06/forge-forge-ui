@@ -6,13 +6,13 @@ import type { WorkflowGraphDto } from "@/types/api";
 export function useWorkflowGraph(
   workspaceId: string,
   workflowId: string,
-  workflowVersionId: string | undefined,
+  workflowVersionNumber: number | undefined,
 ) {
   return useQuery<WorkflowGraphDto>({
-    queryKey: ["workflowGraph", workspaceId, workflowId, workflowVersionId],
-    queryFn: () => getGraph(workspaceId, workflowId, workflowVersionId as string),
+    queryKey: ["workflowGraph", workspaceId, workflowId, workflowVersionNumber],
+    queryFn: () => getGraph(workspaceId, workflowId, workflowVersionNumber as number),
     // Never request /versions/undefined/graph.
-    enabled: Boolean(workspaceId && workflowId && workflowVersionId),
+    enabled: Boolean(workspaceId && workflowId && workflowVersionNumber != null),
     retry: false,
   });
 }
