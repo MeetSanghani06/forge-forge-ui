@@ -44,7 +44,7 @@ export function AppSidebar() {
         ) : workspaces.length === 0 ? (
           <p className="text-sm text-muted-foreground">No workspaces found</p>
         ) : (
-          <Select value={selectedWorkspaceId ?? undefined} onValueChange={selectWorkspace}>
+          <Select value={selectedWorkspaceId ?? ""} onValueChange={selectWorkspace}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select workspace" />
             </SelectTrigger>

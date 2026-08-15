@@ -20,7 +20,7 @@ export function WorkflowDashboard({
   workspaceName,
 }: {
   workspaceId: string;
-  workspaceName?: string;
+  workspaceName?: string | undefined;
 }) {
   const { data, isLoading, error } = useWorkflows(workspaceId);
   const [query, setQuery] = useState("");
