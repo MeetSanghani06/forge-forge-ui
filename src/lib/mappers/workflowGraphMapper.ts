@@ -129,7 +129,7 @@ export function toFlowGraph(graph: WorkflowGraphDto | undefined): {
       label: condition ?? undefined,
       animated: true,
       data: { condition },
-      style: condition ? { strokeDasharray: "6 4" } : undefined,
+      ...(condition ? { style: { strokeDasharray: "6 4" } } : {}),
     });
   });
 
