@@ -270,7 +270,11 @@ function WorkflowBuilderPage() {
               )}
               Publish
             </Button>
-            <ExecuteDialog workspaceId={workspaceId} workflowVersionId={versionId} />
+            <ExecuteDialog
+              workspaceId={workspaceId}
+              workflowId={workflowId}
+              workflowVersionId={versionId}
+            />
           </div>
         </div>
       </header>

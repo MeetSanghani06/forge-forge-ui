@@ -17,13 +17,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useExecuteWorkflow } from "@/hooks/useExecutions";
 import { getErrorMessage } from "@/lib/errorHandler";
+import { rememberExecution } from "@/routes/_authenticated/workspaces.$workspaceId.workflows.$workflowId.history";
 
 export function ExecuteDialog({
   workspaceId,
+  workflowId,
   workflowVersionId,
   disabled,
 }: {
   workspaceId: string;
+  workflowId?: string;
   workflowVersionId: string | undefined;
   disabled?: boolean;
 }) {
@@ -53,6 +56,7 @@ export function ExecuteDialog({
       });
       const executionId = execution?.id ?? execution?.executionId;
       if (!executionId) throw new Error("Execution response did not contain an execution id.");
+      if (workflowId) rememberExecution(workflowId, executionId);
       toast.success("Execution queued");
       setOpen(false);
       void navigate({
