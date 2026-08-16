@@ -27,6 +27,12 @@ export interface AuthTokens {
   expiresIn?: number;
 }
 
+/** POST /api/v1/auth/register — no tokens are returned. */
+export interface RegisteredUser {
+  id: string;
+  email: string;
+}
+
 export interface Workspace {
   id: string;
   name: string;
@@ -68,7 +74,10 @@ export interface WorkflowNodeDto {
   name?: string;
   type?: string;
   nodeType?: string;
-  config?: Record<string, unknown> | null;
+  /** Backends have been observed using either `config` or `configuration`. */
+  config?: Record<string, unknown> | string | null;
+  configuration?: Record<string, unknown> | string | null;
+  connectorId?: string | null;
   positionX?: number | null;
   positionY?: number | null;
   position?: { x: number; y: number } | null;
@@ -78,6 +87,8 @@ export interface WorkflowEdgeDto {
   id?: string;
   sourceNodeId?: string;
   targetNodeId?: string;
+  sourceNodeKey?: string;
+  targetNodeKey?: string;
   source?: string;
   target?: string;
   condition?: string | null;
@@ -99,6 +110,26 @@ export interface WorkflowExecution {
   workflowVersionId?: string;
   version?: number;
   status: WorkflowExecutionStatus;
+  startedAt?: string | null;
+  completedAt?: string | null;
+  input?: unknown;
+  output?: unknown;
+  errorMessage?: string | null;
+}
+
+/** GET /api/v1/executions/{executionId}/nodes */
+export interface NodeExecution {
+  id?: string;
+  executionId?: string;
+  nodeId?: string;
+  nodeKey?: string;
+  nodeName?: string;
+  name?: string;
+  nodeType?: string;
+  type?: string;
+  status: WorkflowExecutionStatus;
+  attempt?: number;
+  sequence?: number;
   startedAt?: string | null;
   completedAt?: string | null;
   input?: unknown;

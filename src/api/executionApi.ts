@@ -1,8 +1,13 @@
 // ============================================================================
 // EXECUTION CONTRACT — adjust endpoints/headers here only.
+//
+// The backend exposes exactly two execution reads:
+//   GET /api/v1/executions/{executionId}
+//   GET /api/v1/executions/{executionId}/nodes
+// There is NO list-executions endpoint — do not add one here.
 // ============================================================================
 import { apiClient, asArray, unwrap } from "@/lib/apiClient";
-import type { WorkflowExecution } from "@/types/api";
+import type { NodeExecution, WorkflowExecution } from "@/types/api";
 
 export interface ExecuteWorkflowArgs {
   workflowVersionId: string;
@@ -25,15 +30,11 @@ export async function executeWorkflowVersion({
 }
 
 export async function getExecution(executionId: string): Promise<WorkflowExecution> {
-  const response = await apiClient.get(`/api/v1/workflow-executions/${executionId}`);
+  const response = await apiClient.get(`/api/v1/executions/${executionId}`);
   return unwrap<WorkflowExecution>(response);
 }
 
-export async function listExecutionsForVersion(
-  workflowVersionId: string,
-): Promise<WorkflowExecution[]> {
-  const response = await apiClient.get(
-    `/api/v1/workflows/versions/${workflowVersionId}/executions`,
-  );
-  return asArray<WorkflowExecution>(unwrap<unknown>(response));
+export async function getExecutionNodes(executionId: string): Promise<NodeExecution[]> {
+  const response = await apiClient.get(`/api/v1/executions/${executionId}/nodes`);
+  return asArray<NodeExecution>(unwrap<unknown>(response));
 }
