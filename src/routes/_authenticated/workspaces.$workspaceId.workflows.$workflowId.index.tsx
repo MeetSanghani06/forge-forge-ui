@@ -295,7 +295,7 @@ function WorkflowBuilderPage() {
           </div>
         ) : (
           <div className="flex h-full min-h-0">
-            <NodePalette onAdd={addNode} />
+            <NodePalette onAdd={addNode} hasTrigger={hasTrigger} />
             <div className="relative min-w-0 flex-1">
               {graphQuery.isLoading ? (
                 <div className="p-6">
