@@ -3,10 +3,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   executeWorkflowVersion,
   getExecution,
-  listExecutionsForVersion,
+  getExecutionNodes,
   type ExecuteWorkflowArgs,
 } from "@/api/executionApi";
-import type { WorkflowExecution } from "@/types/api";
+import type { NodeExecution, WorkflowExecution } from "@/types/api";
 
 export const TERMINAL_STATUSES = ["SUCCESS", "FAILED", "CANCELLED", "TIMED_OUT"];
 
@@ -25,12 +25,14 @@ export function useExecution(executionId: string) {
   });
 }
 
-export function useExecutions(workflowVersionId: string | undefined) {
-  return useQuery<WorkflowExecution[]>({
-    queryKey: ["executions", workflowVersionId],
-    queryFn: () => listExecutionsForVersion(workflowVersionId as string),
-    enabled: Boolean(workflowVersionId),
+/** GET /api/v1/executions/{id}/nodes — polls alongside the execution itself. */
+export function useExecutionNodes(executionId: string, executionStatus?: string) {
+  return useQuery<NodeExecution[]>({
+    queryKey: ["executionNodes", executionId],
+    queryFn: () => getExecutionNodes(executionId),
+    enabled: Boolean(executionId),
     retry: false,
+    refetchInterval: isTerminal(executionStatus) ? false : 2000,
   });
 }
 
