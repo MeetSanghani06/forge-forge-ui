@@ -3,7 +3,7 @@
 //
 // The backend exposes exactly two execution reads:
 //   GET /api/v1/executions/{executionId}
-//   GET /api/v1/executions/{executionId}/nodes
+//   GET /api/v1/workflow-executions/{executionId}/nodes
 // There is NO list-executions endpoint — do not add one here.
 // ============================================================================
 import { apiClient, asArray, unwrap } from "@/lib/apiClient";
@@ -35,6 +35,6 @@ export async function getExecution(executionId: string): Promise<WorkflowExecuti
 }
 
 export async function getExecutionNodes(executionId: string): Promise<NodeExecution[]> {
-  const response = await apiClient.get(`/api/v1/executions/${executionId}/nodes`);
+  const response = await apiClient.get(`/api/v1/workflow-executions/${executionId}/nodes`);
   return asArray<NodeExecution>(unwrap<unknown>(response));
 }

@@ -25,7 +25,7 @@ export function useExecution(executionId: string) {
   });
 }
 
-/** GET /api/v1/executions/{id}/nodes — polls alongside the execution itself. */
+/** GET /api/v1/workflow-executions/{id}/nodes — polls alongside the execution itself. */
 export function useExecutionNodes(executionId: string, executionStatus?: string) {
   return useQuery<NodeExecution[]>({
     queryKey: ["executionNodes", executionId],
