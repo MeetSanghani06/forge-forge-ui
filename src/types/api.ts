@@ -117,11 +117,12 @@ export interface WorkflowExecution {
   errorMessage?: string | null;
 }
 
-/** GET /api/v1/executions/{executionId}/nodes */
+/** GET /api/v1/workflow-executions/{executionId}/nodes */
 export interface NodeExecution {
   id?: string;
   executionId?: string;
   nodeId?: string;
+  workflowNodeId?: string;
   nodeKey?: string;
   nodeName?: string;
   name?: string;
