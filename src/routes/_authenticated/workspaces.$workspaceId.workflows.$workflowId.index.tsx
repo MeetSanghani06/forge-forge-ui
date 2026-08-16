@@ -113,18 +113,28 @@ function WorkflowBuilderPage() {
   );
 
   const selectedNode = nodes.find((node) => node.id === selectedNodeId);
+  const hasTrigger = nodes.some((node) => node.data.nodeType === TRIGGER_NODE_TYPE);
 
   function addNode(type: string) {
+    if (type === TRIGGER_NODE_TYPE && hasTrigger) {
+      toast.error("A workflow can have only one trigger.");
+      return;
+    }
     const id = crypto.randomUUID();
-    setNodes((current) => [
-      ...current,
-      {
-        id,
-        type: "flowforge",
-        position: { x: 160 + current.length * 40, y: 120 + current.length * 30 },
-        data: { label: type, nodeType: type, config: defaultConfigFor(type) },
+    const nodeKey = makeNodeKey(type);
+    const newNode: FlowNode = {
+      id,
+      type: "flowforge",
+      position: { x: 160 + nodes.length * 40, y: 120 + nodes.length * 30 },
+      data: {
+        label: NODE_LABELS[type] ?? type,
+        nodeKey,
+        nodeType: type,
+        config: defaultConfigFor(type),
+        connectorId: null,
       },
-    ]);
+    };
+    setNodes((current) => [...current, newNode]);
     setSelectedNodeId(id);
   }
 
@@ -146,6 +156,11 @@ function WorkflowBuilderPage() {
 
   async function handleSave() {
     if (!versionId) return;
+    const validation = validateGraph(nodes, edges);
+    if (!validation.ok) {
+      toast.error(validation.message ?? "Workflow graph is invalid.");
+      return;
+    }
     try {
       await saveGraph.mutateAsync(toGraphDto(nodes, edges));
       toast.success("Workflow graph saved");
@@ -153,6 +168,7 @@ function WorkflowBuilderPage() {
       toast.error(getErrorMessage(error));
     }
   }
+
 
   async function handlePublish() {
     if (!versionId) return;
